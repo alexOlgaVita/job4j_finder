@@ -44,11 +44,14 @@ public class Finder {
                 pattern = Pattern.compile(argsName.get("n").replace("*", "\\"));
                 condition = p -> pattern.matcher(p.toFile().getName()).find();
             }
-            case ("name") -> condition = p -> argsName.get("n").equals(p.toFile().getName());
+            case ("name") -> {
+                condition = p -> argsName.get("n").equals(p.toFile().getName());
+            }
             case ("regexp") -> {
                 pattern = Pattern.compile(argsName.get("n"));
                 condition = p -> pattern.matcher(p.toFile().getName()).find();
             }
+            default -> throw new IllegalStateException("Unexpected value: " + argsName.get("t"));
         }
         return searcher.getPaths().stream().filter(condition).toList();
     }
